@@ -1,0 +1,19 @@
+{
+    "name": "php-tool-kit/log",
+    "description": "Ferramentas para log",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Everton da Rosa",
+            "email": "everton3x@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.4.12"
+    },
+    "autoload": {
+        "files": ["src/log.php"]
+    }
+}
