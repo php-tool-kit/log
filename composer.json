@@ -11,9 +11,12 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": ">=7.4.12"
+        "php": ">=8.0.3",
+        "psr/log": ">=1.1.3"
     },
     "autoload": {
-        "files": ["src/log.php"]
+        "psr-4": {
+            "PTK\\Log\\": "src"
+        }
     }
 }
