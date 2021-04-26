@@ -16,7 +16,7 @@ class StreamWriter implements WriterInterface {
     }
     
     public function write($formatted): void {
-        fgets($this->handle, $formatted);
+        fwrite($this->handle, $formatted);
     }
 
 }

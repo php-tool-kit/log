@@ -9,13 +9,31 @@ namespace PTK\Log\Formatter;
  */
 abstract class FormatterAbstract implements FormatterInterface {
     
+    /**
+     * 
+     * @var string|null
+     */
     protected ?string $format;
     
-    public function __construct(?string $format = null) {
+    /**
+     * 
+     * @var string|null
+     */
+    protected ?string $dateTimeFormat;
+    
+    /**
+     * 
+     * @param string|null $format
+     * @param string|null $$dateTimeFormat
+     */
+    public function __construct(?string $format = null, ?string $dateTimeFormat = null) {
         $this->format = $format;
+        $this->dateTimeFormat = $dateTimeFormat;
     }
 
-    abstract public function format($message, mixed $context = []);
+    abstract public function format($level, $message, mixed $context = []);
+    
+    abstract protected function parseContext(string $message, mixed $context): string;
 
     public function getFormat(): string {
         return $this->format;
@@ -26,37 +44,12 @@ abstract class FormatterAbstract implements FormatterInterface {
         return $this;
     }
     
-    /**
-     * Chamada por self::format()
-     * 
-     * @param string $format
-     * @param mixed $context
-     * @return string
-     */
-    protected function parseContext(string $format, mixed $context = []): string {
-        
+    public function setDateTimeFormat(string $format): void {
+        $this->dateTimeFormat = $format;
     }
-    /**
-     * Chamada por self::format()
-     * 
-     * Aplica no formato algumas variáveis prédefinidas delimitadas por [%varname%]
-     * 
-     * Variáveis:
-     * 
-     * - message
-     * - context
-     * - datetime
-     * - date
-     * - time
-     * - ...
-     * 
-     * 
-     * 
-     * @param string $format
-     * @return string
-     */
-    protected function applyVariables(string $format): string {
-        
+    
+    public function getDateTimeFormat(): string {
+        return $this->dateTimeFormat;
     }
 
 }
