@@ -4,19 +4,27 @@ namespace PTK\Log\Formatter;
 
 /**
  *
- * @author evert
+ * @author Everton da Rosa <everton3x@gmail.com>
  */
-interface FormatterInterface {
-    
+interface FormatterInterface
+{
+
     public function __construct(?string $format = null, ?string $dateTimeFormat = null);
-    
-    public function format($level, $message, mixed $context = []);
-    
+
+    /**
+     *
+     * @param string $level
+     * @param string $message
+     * @param array<mixed> $context
+     * @return string
+     */
+    public function format(string $level, string $message, array $context = []): string;
+
     public function setFormat(string $format): FormatterInterface;
-    
-    public function getFormat(): string;
-    
+
+    public function getFormat(): ?string;
+
     public function setDateTimeFormat(string $format): void;
-    
-    public function getDateTimeFormat(): string;
+
+    public function getDateTimeFormat(): ?string;
 }

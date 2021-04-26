@@ -2,21 +2,42 @@
 
 namespace PTK\Log\Writer;
 
+use Exception;
+
 /**
- * Description of StdOutWriter
+ * Writer prar streams abertos por fopen().
  *
- * @author evert
+ * @author Everton da Rosa <everton3x@gmail.com>
  */
-class StreamWriter implements WriterInterface {
-    
+class StreamWriter implements WriterInterface
+{
+
+    /**
+     *
+     * @var resource
+     */
     protected $handle;
-    
-    public function __construct(string $stream) {
-        $this->handle = fopen($stream, 'a');
-    }
-    
-    public function write($formatted): void {
-        fwrite($this->handle, $formatted);
+
+    /**
+     *
+     * @param string $stream
+     */
+    public function __construct(string $stream)
+    {
+        $resource = fopen($stream, 'a');
+        if ($resource === false) {
+            throw new Exception($stream);
+        }
+        $this->handle = $resource;
     }
 
+    /**
+     *
+     * @param mixed $formatted
+     * @return void
+     */
+    public function write(mixed $formatted): void
+    {
+        fwrite($this->handle, $formatted);
+    }
 }
