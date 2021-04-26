@@ -29,6 +29,7 @@ class LineFormatter extends FormatterAbstract
      */
     public function format(string $level, string $message, array $context = []): string
     {
+        echo __METHOD__, PHP_EOL;
         $message = $this->parseContext($message, $context);
         $message = $this->applyVariables($level, $message);
         return $message;
@@ -43,6 +44,7 @@ class LineFormatter extends FormatterAbstract
      */
     protected function parseContext(string $message, mixed $context): string
     {
+//        echo __METHOD__, PHP_EOL;
         foreach ($context as $field => $value) {
             $message = str_replace('{' . $field . '}', $value, $message);
         }
@@ -67,6 +69,7 @@ class LineFormatter extends FormatterAbstract
      */
     protected function applyVariables(string $level, string $message): string
     {
+//        echo __METHOD__, PHP_EOL;
         if ($this->format === null) {
             return '';
         }
@@ -74,10 +77,9 @@ class LineFormatter extends FormatterAbstract
             $this->dateTimeFormat = self::DEFAULT_DATE_FORMAT;
         }
         $datetime = date($this->dateTimeFormat);
-        $result = '';
-        $result .= str_replace('[%datetime%]', $datetime, $this->format);
-        $result .= str_replace('[%level%]', $level, $result);
-        $result .= str_replace('[%message%]', $message, $result);
+        $result = str_replace('[%datetime%]', $datetime, $this->format);
+        $result = str_replace('[%level%]', strtoupper($level), $result);
+        $result = str_replace('[%message%]', $message, $result);
 
         return $result;
     }
