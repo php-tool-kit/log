@@ -7,10 +7,11 @@ namespace PTK\Log\Formatter;
  *
  * @author Everton da Rosa <everton3x@gmail.com>
  */
-class CLImateFormatter extends LineFormatter {
-    
+class CLImateFormatter extends LineFormatter
+{
+
     protected ?string $format;
-    
+
     protected const FORMATS = [
         'alert' => [
             'foreground' => 'white',
@@ -53,48 +54,53 @@ class CLImateFormatter extends LineFormatter {
             'effect' => null
         ]
     ];
-    public function __construct(?string $format = null, ?string $dateTimeFormat = null) {
-        $this->format = ($format === null)? "[%datetime%]\t[%climate_start_bg%][%climate_start_fg%][%climate_start_effect%][%level%][%climate_end_effect%][%climate_end_fg%][%climate_end_bg%]\t[%message%]" : $format;
+    public function __construct(?string $format = null, ?string $dateTimeFormat = null)
+    {
+        $this->format = $format;
+        if ($format === null) {
+            $this->format = "[%datetime%]\t[%climate_start_bg%][%climate_start_fg%][%climate_start_effect%][%level%]"
+                    . "[%climate_end_effect%][%climate_end_fg%][%climate_end_bg%]\t[%message%]";
+        }
         parent::__construct($this->format, $dateTimeFormat);
     }
-    
+
     protected function applyVariables(string $level, string $message): string
     {
 //        echo __METHOD__, PHP_EOL;
         $result = parent::applyVariables($level, $message);
-        
+
         $background = self::FORMATS[$level]['background'];
-        if($background === null){
+        if ($background === null) {
             $result = str_replace('[%climate_start_bg%]', '', $result);
             $result = str_replace('[%climate_end_bg%]', '', $result);
         }
-        if($background !== null){
-            $result = str_replace('[%climate_start_bg%]', '<background_'.$background.'>', $result);
-            $result = str_replace('[%climate_end_bg%]', '</background_'.$background.'>', $result);
+        if ($background !== null) {
+            $result = str_replace('[%climate_start_bg%]', '<background_' . $background . '>', $result);
+            $result = str_replace('[%climate_end_bg%]', '</background_' . $background . '>', $result);
         }
 
         $foreground = self::FORMATS[$level]['foreground'];
-        if($foreground === null){
+        if ($foreground === null) {
             $result = str_replace('[%climate_start_fg%]', '', $result);
             $result = str_replace('[%climate_end_fg%]', '', $result);
         }
-        if($foreground !== null){
-            $result = str_replace('[%climate_start_fg%]', '<'.$foreground.'>', $result);
-            $result = str_replace('[%climate_end_fg%]', '</'.$foreground.'>', $result);
+        if ($foreground !== null) {
+            $result = str_replace('[%climate_start_fg%]', '<' . $foreground . '>', $result);
+            $result = str_replace('[%climate_end_fg%]', '</' . $foreground . '>', $result);
         }
-        
+
         $effect = self::FORMATS[$level]['effect'];
-        if($effect === null){
+        if ($effect === null) {
             $result = str_replace('[%climate_start_effect%]', '', $result);
             $result = str_replace('[%climate_end_effect%]', '', $result);
         }
-        if($effect !== null){
-            $result = str_replace('[%climate_start_effect%]', '<'.$effect.'>', $result);
-            $result = str_replace('[%climate_end_effect%]', '</'.$effect.'>', $result);
+        if ($effect !== null) {
+            $result = str_replace('[%climate_start_effect%]', '<' . $effect . '>', $result);
+            $result = str_replace('[%climate_end_effect%]', '</' . $effect . '>', $result);
         }
         return $result;
     }
-    
+
     public function format(string $level, string $message, array $context = []): string
     {
 //        echo __METHOD__, PHP_EOL;
